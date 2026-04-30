@@ -1,5 +1,7 @@
 # 김민성 포트폴리오 (KIM MINSEONG Portfolio)
 
+2026 04 30
+
 프로덕트 매니저 김민성의 개인 포트폴리오 웹사이트입니다. 사용자 중심의 기획과 데이터 기반 의사결정으로 비즈니스 가치를 창출한 프로젝트들을 소개합니다.
 
 원본 Figma 디자인: https://www.figma.com/design/27bTYlWljvuG2SCHSSmt7X/minseong-portfolio
