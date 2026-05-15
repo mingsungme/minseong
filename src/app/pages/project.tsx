@@ -86,7 +86,7 @@ export function PMPortfolio() {
     : records.filter(r => r.subjects?.includes(selectedSubject));
 
   return (
-    <div className="min-h-screen pt-32 pb-24 px-8">
+    <div className="min-h-screen pt-8 pb-24 px-8">
       <div className="max-w-[1280px] mx-auto">
 
         {/* Header */}
@@ -226,16 +226,26 @@ function RecordCard({ record, index, isAdmin, viewMode, onEdit, onDelete }: Reco
       className={`group bg-[#1a1a1a] border border-[#f5f5f0]/10 hover:border-[#ff6b35]/40 transition-all duration-300 ${isList ? 'flex flex-row' : 'flex flex-col'}`}
       style={{ animation: `fadeInUp 0.6s ease-out ${index * 0.07}s both` }}
     >
-      {record.thumbnail && (
-        <div className={`relative overflow-hidden bg-[#0a0a0a] ${isList ? 'w-48 shrink-0' : 'h-48'}`}>
-          <img
-            src={record.thumbnail}
-            alt="thumbnail"
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-          />
-          {!isList && <div className="absolute inset-0 bg-gradient-to-t from-[#1a1a1a] via-transparent to-transparent opacity-60" />}
-        </div>
-      )}
+      <div className={`relative overflow-hidden bg-[#0a0a0a] ${isList ? 'w-48 shrink-0' : 'h-48'}`}>
+        {record.thumbnail ? (
+          <>
+            <img
+              src={record.thumbnail}
+              alt="thumbnail"
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            />
+            {!isList && <div className="absolute inset-0 bg-gradient-to-t from-[#1a1a1a] via-transparent to-transparent opacity-60" />}
+          </>
+        ) : (
+          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a]">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" className="text-[#f5f5f0]/15">
+              <rect x="3" y="3" width="18" height="18" rx="1" />
+              <circle cx="9" cy="9" r="2" />
+              <path d="M21 15l-5-5L5 21" />
+            </svg>
+          </div>
+        )}
+      </div>
 
       <div className="p-6 flex flex-col flex-1">
         {/* Title */}
@@ -281,27 +291,33 @@ function RecordCard({ record, index, isAdmin, viewMode, onEdit, onDelete }: Reco
           )}
         </div>
 
-        {/* Subjects */}
-        {record.subjects?.length > 0 && (
-          <div className="flex flex-wrap gap-1.5 mb-3">
-            {record.subjects.map(s => (
-              <span key={s} className="px-2 py-0.5 bg-[#ff6b35]/10 border border-[#ff6b35]/30 font-['Space_Mono'] text-[11px] text-[#ff6b35]">
-                {s}
-              </span>
-            ))}
-          </div>
-        )}
+        {/* Subjects - single line */}
+        <div className="relative flex flex-nowrap gap-1.5 mb-3 h-[22px] overflow-hidden" style={{ maskImage: 'linear-gradient(to right, #000 calc(100% - 24px), transparent)', WebkitMaskImage: 'linear-gradient(to right, #000 calc(100% - 24px), transparent)' }}>
+          {record.subjects?.length > 0 ? (
+            <>
+              {record.subjects.map(s => (
+                <span key={s} className="shrink-0 whitespace-nowrap px-2 py-0.5 bg-[#ff6b35]/10 border border-[#ff6b35]/30 font-['Space_Mono'] text-[11px] text-[#ff6b35]">
+                  {s}
+                </span>
+              ))}
+              <span className="shrink-0 self-center font-['Space_Mono'] text-[11px] text-[#ff6b35]/60 px-1">···</span>
+            </>
+          ) : null}
+        </div>
 
-        {/* Keywords */}
-        {record.keywords?.length > 0 && (
-          <div className="flex flex-wrap gap-1.5 mb-3">
-            {record.keywords.map(kw => (
-              <span key={kw} className="px-2 py-0.5 bg-[#2a2a2a] border border-[#f5f5f0]/10 font-['Space_Mono'] text-[11px] text-[#b8b8a8]">
-                {kw}
-              </span>
-            ))}
-          </div>
-        )}
+        {/* Keywords - single line */}
+        <div className="relative flex flex-nowrap gap-1.5 mb-3 h-[22px] overflow-hidden" style={{ maskImage: 'linear-gradient(to right, #000 calc(100% - 24px), transparent)', WebkitMaskImage: 'linear-gradient(to right, #000 calc(100% - 24px), transparent)' }}>
+          {record.keywords?.length > 0 ? (
+            <>
+              {record.keywords.map(kw => (
+                <span key={kw} className="shrink-0 whitespace-nowrap px-2 py-0.5 bg-[#2a2a2a] border border-[#f5f5f0]/10 font-['Space_Mono'] text-[11px] text-[#b8b8a8]">
+                  {kw}
+                </span>
+              ))}
+              <span className="shrink-0 self-center font-['Space_Mono'] text-[11px] text-[#b8b8a8]/60 px-1">···</span>
+            </>
+          ) : null}
+        </div>
 
         {/* Work note */}
         {record.workNote && (
@@ -320,25 +336,30 @@ function RecordCard({ record, index, isAdmin, viewMode, onEdit, onDelete }: Reco
           </div>
         )}
 
-        {/* Links */}
-        {record.links?.filter(l => l.url).length > 0 && (
-          <div className="mt-auto pt-3 border-t border-[#f5f5f0]/10 flex flex-wrap gap-2">
-            {record.links.filter(l => l.url).map((link, i) => (
-              <a
-                key={i}
-                href={link.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-1.5 px-2 py-1 bg-[#0a0a0a] border border-[#f5f5f0]/10 hover:border-[#ff6b35] transition-colors font-['Space_Mono'] text-[11px] text-[#b8b8a8] hover:text-[#ff6b35]"
-              >
-                <span>{LINK_TYPE_ICONS[link.type]}</span>
-                <span className="truncate max-w-[100px]">
-                  {(() => { try { return new URL(link.url).hostname.replace('www.', ''); } catch { return link.url; } })()}
-                </span>
-              </a>
-            ))}
+        {/* Links - single line */}
+        <div className="mt-auto pt-3 border-t border-[#f5f5f0]/10">
+          <div className="relative flex flex-nowrap gap-2 h-[28px] overflow-hidden" style={{ maskImage: 'linear-gradient(to right, #000 calc(100% - 24px), transparent)', WebkitMaskImage: 'linear-gradient(to right, #000 calc(100% - 24px), transparent)' }}>
+            {record.links?.filter(l => l.url).length > 0 ? (
+              <>
+                {record.links.filter(l => l.url).map((link, i) => (
+                  <a
+                    key={i}
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="shrink-0 whitespace-nowrap flex items-center gap-1.5 px-2 py-1 bg-[#0a0a0a] border border-[#f5f5f0]/10 hover:border-[#ff6b35] transition-colors font-['Space_Mono'] text-[11px] text-[#b8b8a8] hover:text-[#ff6b35]"
+                  >
+                    <span>{LINK_TYPE_ICONS[link.type]}</span>
+                    <span className="truncate max-w-[100px]">
+                      {(() => { try { return new URL(link.url).hostname.replace('www.', ''); } catch { return link.url; } })()}
+                    </span>
+                  </a>
+                ))}
+                <span className="shrink-0 self-center font-['Space_Mono'] text-[11px] text-[#b8b8a8]/60 px-1">···</span>
+              </>
+            ) : null}
           </div>
-        )}
+        </div>
       </div>
     </div>
   );

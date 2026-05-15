@@ -8,7 +8,9 @@ export function Root() {
     <AuthProvider>
       <div className="min-h-screen bg-[#0a0a0a] text-[#f5f5f0]">
         <Navigation />
-        <Outlet />
+        <main className="pt-24">
+          <Outlet />
+        </main>
         <Footer />
 
       <style>{`
